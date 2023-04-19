@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Flask App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0052a3;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="text-center">AI Farmer's Assistance</h1>
+    <form class="p-3 text-center" action='/' method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="district">District</label>
+            <input type="text" class="form-control" id="district-input" placeholder="Type to search...">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="district-dropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                    Select District
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="district-dropdown" id="district-options">
+                    <li><a class="dropdown-item" href="#" data-value="district1">District 1</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="district2">District 2</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="district3">District 3</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="district4">District 4</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Season</label>
+            <input type="text" class="form-control" id="season" name="season">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Area of Cultivation</label>
+            <input class="form-control" id="area" name="area">
+        </div>
+        <div class="mb-3">
+            <label for="imagefile" class="form-label">Image File</label>
+            <input class="form-control" type="file" id="imagefile" name="imagefile">
+        </div>
+        <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+    </form>
+
+    {% if prediction is defined %}
+    <h2>The predicted class label is: {{ prediction }}</h2>
+    {% endif %}
+    <script>
+        $(document).ready(function() {
+    $("#district-input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#district-options li").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    $("#district-options li a").on("click", function() {
+        var value = $(this).data("value");
+        $("#district-dropdown").text($(this).text());
+        $("#district-input").val(value);
+    });
+});
+
+    </script>
+</body>
+
+</html>
