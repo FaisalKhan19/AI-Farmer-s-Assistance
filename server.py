@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import numpy as np
 import cv2
-from Models import model
+from Models import model, make
 
 model = model.get()
 
