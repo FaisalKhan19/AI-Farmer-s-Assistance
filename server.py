@@ -1,10 +1,5 @@
 from flask import Flask, render_template, request
-import numpy as np
-import cv2
-from Models import model, make
-
-model = model.get()
-
+from Models import make_preds
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
@@ -14,16 +9,14 @@ def hello_world():
 @app.route('/', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
-        dist = request.form.get('dist')
+        dist = request.form.get('district')
         season = request.form.get('season')
         area = request.form.get('area')
         imagefile = request.files['imagefile']
-        img = cv2.imdecode(np.fromstring(imagefile.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-        img = cv2.resize(img, (300, 300))
-        img = img.reshape((1,) + img.shape)
-        yhat = model.predict(img)
-        classification = yhat[0]
-        return render_template('index.html', prediction=classification)
+        
+        preds = make_preds.get_yeild(imagefile=imagefile, dist=dist, season=season, area=area)
+
+        return render_template('index.html', prediction=preds)
     else:
         return render_template('index.html')
 

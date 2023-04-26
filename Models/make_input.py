@@ -13,7 +13,7 @@ def make_data(district, season, label, area):
     soil = soil_type[label-1]
     crops = crop_dict[soil]
     df = pd.read_csv("C:\\Users\\Faisal Ali khan\\Desktop\\Flask 2\\VENV\\Models\\input.csv")
-    cols = df.columns()
+    cols = df.columns
     for crop in crops:
         new_row = {}
         for col in cols:
@@ -27,8 +27,13 @@ def make_data(district, season, label, area):
                 new_row[col] = 1 if crop.upper() in col.upper() else 0
             else:
                 new_row[col] = 0
-        # Add the new row to the DataFrame
-        df = df.append(new_row, ignore_index=True)
+        new_df = pd.DataFrame([new_row])
+        df = pd.concat([df, new_df], ignore_index=True)
     
     return df.drop('Unnamed: 0',axis=1)
     
+def map_yeilds(pred, label):
+    soil = soil_type[label-1]
+    crops = crop_dict[soil]
+    yeilds = dict(zip(crops, pred))
+    return yeilds

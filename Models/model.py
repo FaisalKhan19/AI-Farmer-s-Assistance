@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import pickle
 from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler 
@@ -22,7 +23,12 @@ for dirc in os.listdir():
 X = np.array(X)
 Y = np.array(Y)
 
-model_n1 = tf.keras.models.load_model("C://Users//Faisal Ali Khan//Desktop//Crop-Yield-Prediction-in-India-using-ML-main//Model_N1")
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_directory)
+with open("grid_search_model.pkl", 'rb') as file:
+    model_rfs = pickle.load(file)
+model_n1 = tf.keras.models.load_model("Model_N1")
 model_output = model_n1.layers[10].output
 model_input = model_n1.inputs
 model_FE = tf.keras.models.Model(inputs=model_input, outputs=model_output)
@@ -36,4 +42,4 @@ model = pipeline = Pipeline([
 model.fit(X,Y)
 
 def get():
-    return model
+    return model,model_rfs
