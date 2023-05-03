@@ -16,11 +16,13 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
+
         h1 {
             color: #0066cc;
             text-align: center;
             margin-top: 2rem;
         }
+
         form {
             background-color: #fff;
             padding: 2rem;
@@ -29,6 +31,7 @@
             max-width: 600px;
             margin: 2rem auto;
         }
+
         input[type="text"],
         input[type="email"],
         textarea {
@@ -39,6 +42,7 @@
             border-radius: 5px;
             font-size: 1rem;
         }
+
         input[type="submit"] {
             display: block;
             width: 100%;
@@ -51,12 +55,40 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background-color: #0052a3;
         }
+
         h2 {
             text-align: center;
             margin-top: 2rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 47%;
+            margin: 0 auto;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -73,7 +105,7 @@
             <input type="text" class="form-control" id="season" name="season">
         </div>
         <div class="mb-3">
-            <label class="form-label">Area of Cultivation</label>
+            <label class="form-label">Area of Cultivation (Hectares)</label>
             <input class="form-control" id="area" name="area">
         </div>
         <div class="mb-3">
@@ -82,26 +114,29 @@
         </div>
         <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
     </form>
-
     {% if prediction is defined %}
-    <h2>The predicted class label is: {{ prediction }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <h2>Crops</h2>
+                </th>
+                <th>
+                    <h2>Estimated Yield</h2>
+                    (Quintal)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in prediction.items() %}
+            <tr>
+                <td> {{ key }} </td>
+                <td> {{ value }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
-    <script>
-        $(document).ready(function() {
-    $("#district-input").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#district-options li").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-    $("#district-options li a").on("click", function() {
-        var value = $(this).data("value");
-        $("#district-dropdown").text($(this).text());
-        $("#district-input").val(value);
-    });
-});
-
-    </script>
 </body>
 
 </html>
